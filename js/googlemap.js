@@ -77,6 +77,43 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.open(map);
 }
 
+function rating(data) {
+
+    for (var i = 0; i < data.features.length; i++) {
+
+    if (data.features[i].properties.quality_rating == 0) {
+        var stars = null;
+    }
+    if (data.features[i].properties.quality_rating == 1) {
+        var stars = '<span class="fa fa-star checked"></span>';
+    }
+    if (data.features[i].properties.quality_rating == 2) {
+        var stars = '<span class="fa fa-star checked"></span>' +
+            '<span class="fa fa-star checked"></span>';
+    }
+    if (data.features[i].properties.quality_rating == 3) {
+        var stars = '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>';
+    }
+    if (data.features[i].properties.quality_rating == 4) {
+        var stars = '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>';
+    }
+    if (data.features[i].properties.quality_rating == 5) {
+        var stars = '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>'+
+        '<span class="fa fa-star checked"></span>';
+    }
+    return stars;
+}
+
+}
+
 function setMarkers(map, data) {
     // Adds markers to the map.
     var beaches = [
@@ -108,20 +145,21 @@ function setMarkers(map, data) {
         coords: [1, 1, 1, 20, 18, 20, 18, 1],
         type: 'poly'
     };
-  
+
     for (var i = 0; i < data.features.length; i++) {
         var contentString = '<div id="iw-container">' +
-        '<div class="iw-title">' + data.features[i].properties.full_name + '</div>' +
-        '<div class="iw-content">' +
-        '<div class="iw-subTitle">info</div>' +
-        '<p>intersection:' + '<br>' + data.features[i].properties.intersection + '<br>' + '</p>' +
-        '<p>suburb:' + '<br>' + data.features[i].properties.suburb + '<br>' + '</p>' +
-        '<p>postcode:' + '<br>' + data.features[i].properties.postcode + '<br>' + '</p>' +
-        '<p>road_classification_type:' + '<br>' + data.features[i].properties.road_classification_type + '<br>' + '</p>' +
-        '<p>lga:' + '<br>' + data.features[i].properties.lga + '<br>' + '</p>' +
-        '</div>' +
-        '<div class="iw-bottom-gradient"></div>' +
-        '</div>';
+            '<div class="iw-title">' + data.features[i].properties.full_name + '</div>' +
+            '<div class="iw-content">' +
+            '<div class="iw-subTitle">info</div>' +
+            '<p>intersection:' + '<br>' + data.features[i].properties.intersection + '<br>' + '</p>' +
+            '<p>suburb:' + '<br>' + data.features[i].properties.suburb + '<br>' + '</p>' +
+            '<p>postcode:' + '<br>' + data.features[i].properties.postcode + '<br>' + '</p>' +
+            '<p>road_classification_type:' + '<br>' + data.features[i].properties.road_classification_type + '<br>' + '</p>' +
+            '<p>lga:' + '<br>' + data.features[i].properties.lga + '<br>' + '</p>' +
+            '</div>' +
+            rating(data) +
+            '<div class="iw-bottom-gradient"></div>' +
+            '</div>';
 
         var infowindow = new google.maps.InfoWindow({
             content: contentString
@@ -139,16 +177,16 @@ function setMarkers(map, data) {
             info: contentString
         });
 
-       
 
-        google.maps.event.addListener( marker, 'click', function() {
 
-            infoWindow.setContent( this.info );
-            infoWindow.open( map, this );
-         
-         });
+        google.maps.event.addListener(marker, 'click', function () {
 
-        
+            infoWindow.setContent(this.info);
+            infoWindow.open(map, this);
+
+        });
+
+
 
     }
 }
