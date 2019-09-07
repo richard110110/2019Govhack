@@ -11,6 +11,7 @@ var url = "../assests/cartodb-query.geojson";
 
 
 function initMap() {
+    
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         center: {
@@ -19,6 +20,34 @@ function initMap() {
         }
     });
     infoWindow = new google.maps.InfoWindow;
+
+    fetch(url).then(function (res) {
+        return res.json();
+    })
+    .then(function (data) {
+
+        console.log(data);
+        console.log(data.features.length);
+        console.log(data.features[0].properties);
+        console.log(data.features[0].properties.wgs84_latitude);
+        console.log(data.features[0].properties.wgs84_longitude);
+
+
+        setMarkers(map, data);
+
+    });
+
+    var directionsRenderer = new google.maps.DirectionsRenderer;
+    var directionsService = new google.maps.DirectionsService;
+    directionsRenderer.setMap(map);
+    
+        calculateAndDisplayRoute(directionsService, directionsRenderer);
+        document.getElementById('mode').addEventListener('change', function() {
+          calculateAndDisplayRoute(directionsService, directionsRenderer);
+        });
+
+   
+   
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var pos = {
@@ -48,25 +77,13 @@ function initMap() {
         // Browser doesn't support Geolocation
         handleLocationError(false, infoWindow, map.getCenter());
     }
-    fetch(url).then(function (res) {
-            return res.json();
-        })
-        .then(function (data) {
-
-            console.log(data);
-            console.log(data.features.length);
-            console.log(data.features[0].properties);
-            console.log(data.features[0].properties.wgs84_latitude);
-            console.log(data.features[0].properties.wgs84_longitude);
-
-
-            setMarkers(map, data);
-
-        });
+    
 }
 
-// Data for the markers consisting of a name, a LatLng and a zIndex for the
-// order in which these markers should display on top of each other.
+
+
+  
+
 
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -133,7 +150,7 @@ function createOptions(data){
     
     var options = "<option value='0'>Select</option>";
     for(var i=0; i<data.features.length;i++){
-        options+= '<option value='+ data.features[i].properties.full_name + '>'+data.features[i].properties.common_road_name+'</option>';
+        options+= '<option value='+ data.features[i].properties.wgs84_latitude +',' +  data.features[i].properties.wgs84_longitude + '>'+data.features[i].properties.common_road_name+'</option>';
     }
     document.getElementById('start').innerHTML = options;
     document.getElementById('end').innerHTML = options;
@@ -239,6 +256,147 @@ function setMarkers(map, data) {
     }
 
 }
+
+function GetStartSelectedValue(){
+    var start = document.getElementById("start");
+    var startresult = start.options[start.selectedIndex].value;
+
+    var startchar = startresult.split(',');
+    console.log(startchar);
+
+   
+    
+    return startchar;
+}
+
+function GetEndSelectedValue(){
+    var end = document.getElementById("end");
+    var endresult = end.options[end.selectedIndex].value;
+
+    var endchar = endresult.split(',');
+    console.log(endchar);
+
+    
+    return endchar;
+}
+
+
+function initMap2() {
+    var directionsRenderer = new google.maps.DirectionsRenderer;
+    var directionsService = new google.maps.DirectionsService;
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 14,
+      center: {lat: 37.77, lng: -122.447}
+    });
+    directionsRenderer.setMap(map);
+
+    calculateAndDisplayRoute2(directionsService, directionsRenderer);
+    document.getElementById('mode').addEventListener('change', function() {
+      calculateAndDisplayRoute2(directionsService, directionsRenderer);
+    });
+  }
+
+  function calculateAndDisplayRoute2(directionsService, directionsRenderer) {
+    var selectedMode = document.getElementById('mode').value;
+    console.log(selectedMode);
+    var start = GetStartSelectedValue();
+    var end = GetEndSelectedValue();
+
+    console.log(typeof parseFloat(start[0]));
+    console.log(typeof start[1]);
+
+
+    console.log(typeof end[0]);
+    console.log(typeof end[1]);
+
+    // var start = test(GetStartSelectedValue);
+    // console.log(start);
+
+    // var end = test(GetEndSelectedValue);
+    // console.log(end);
+
+    var selectedMode = document.getElementById('mode').value;
+    directionsService.route({
+      origin: {lat: parseFloat(start[0]), lng: parseFloat(start[1])},  // Haight.
+      destination: {lat: parseFloat(end[0]), lng: parseFloat(end[1])},  // Ocean Beach.
+      // Note that Javascript allows us to access the constant
+      // using square brackets and a string value as its
+      // "property."
+      travelMode: google.maps.TravelMode[selectedMode]
+    }, function(response, status) {
+      if (status == 'OK') {
+        directionsRenderer.setDirections(response);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+  }
+
+
+// Data for the markers consisting of a name, a LatLng and a zIndex for the
+// order in which these markers should display on top of each other.
+
+
+function getValue(){
+    GetStartSelectedValue();
+    GetEndSelectedValue();
+    initMap2();
+    
+}
+
+function test(t) {      //defining a function
+    if (t === undefined) {       //if t=undefined, call tt
+          console.log(t.tt)
+                //call tt member from t
+    }
+    return t;    
+  }
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    var selectedMode = document.getElementById('mode').value;
+    console.log(selectedMode);
+
+    var start = test(GetStartSelectedValue);
+    console.log(start);
+
+    var end = test(GetEndSelectedValue);
+    console.log(end);
+    
+     
+        directionsService.route({
+            origin: {lat: 37.77, lng: -122.447},  // Haight.
+            destination: {lat: 37.768, lng: -122.511},  // Ocean Beach.
+            // Note that Javascript allows us to access the constant
+            // using square brackets and a string value as its
+            // "property."
+            travelMode: google.maps.TravelMode[selectedMode]
+          }, function(response, status) {
+            if (status == 'OK') {
+              directionsRenderer.setDirections(response);
+            } else {
+              window.alert('Directions request failed due to ' + status);
+            }
+          });
+    
+    
+    
+    
+    
+    // var selectLat = latitude.options[latitude.selectedIndex].value;
+
+    // var latichars = selectLat.split(',');
+
+    // var longitude = document.getElementById('end').value;
+    // var selectLong = longitude.options[longitude.selectedIndex].value;
+
+    // var Longchar = selectLong.split(',');
+    // console.log(latichars);
+    // console.log(Longchar);
+    
+
+   
+  }
+
 
 // function calculateAndDisplayRoute(directionsRenderer, directionsService,
 //     markerArray, stepDisplay, map) {
