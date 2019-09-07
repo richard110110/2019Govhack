@@ -1,16 +1,42 @@
-#map {
-    position: absolute;
-    width: 49%;
-    height: 100%;
-    background: grey;
-  }
+
   
-  #panel {
+  /* #panel {
     position: absolute;
-    width: 49%;
-    left: 51%;
+    width: 50%;
     
-    background: inherit;
-    height: 200px;
-    overflow: scroll;
-  }
+    
+    height: 500px;
+        background: inherit;
+    overflow: auto;
+  } */
+
+
+#container {
+    width: 80%;
+    height: 500px;
+    background: aqua;
+    margin: auto;
+    padding: 10px;
+}
+#map {
+    width: 50%;
+    height: 500px;
+    background: red;
+    float: left;
+    border-color: brown;
+    border-width: 10px;
+}
+#panel {
+  margin-left: 15%;
+  height: 500px;
+  background: inherit;
+  overflow: auto;
+}
+
+#route{
+  width: 80%;
+  height: 500px;
+  background: aqua;
+  margin: auto;
+  padding: 10px;
+}
