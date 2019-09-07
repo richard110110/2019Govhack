@@ -37,14 +37,7 @@ function initMap() {
 
     });
 
-    var directionsRenderer = new google.maps.DirectionsRenderer;
-    var directionsService = new google.maps.DirectionsService;
-    directionsRenderer.setMap(map);
-    
-        calculateAndDisplayRoute(directionsService, directionsRenderer);
-        document.getElementById('mode').addEventListener('change', function() {
-          calculateAndDisplayRoute(directionsService, directionsRenderer);
-        });
+   
 
    
    
