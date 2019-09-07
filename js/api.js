@@ -14,7 +14,8 @@ var settings = {
         "Accept-Encoding": "gzip, deflate",
         "Cookie": "AWSALB=MSF3juqw811GLa2oY/JHRiFVwJ75A1Q6tw15TdkmePeiu7/7xOyun/1su8MJo94GRsaa5CCcsMa8z24WXBX8Fvv92Ol9SkIzLCFrJPBCw5ythBazidxjpzH8Gv5v",
         "Connection": "keep-alive",
-        "cache-control": "no-cache"
+        "cache-control": "no-cache",
+        "Access-Control-Allow-Origin": "https://epic-blackwell-5f07bc.netlify.com"
 
     }
 }
