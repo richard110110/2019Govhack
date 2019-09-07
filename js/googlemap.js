@@ -108,7 +108,24 @@ function setMarkers(map, data) {
         coords: [1, 1, 1, 20, 18, 20, 18, 1],
         type: 'poly'
     };
+  
     for (var i = 0; i < data.features.length; i++) {
+        var contentString = '<div id="iw-container">' +
+        '<div class="iw-title">' + data.features[i].properties.full_name + '</div>' +
+        '<div class="iw-content">' +
+        '<div class="iw-subTitle">info</div>' +
+        '<p>intersection:' + '<br>' + data.features[i].properties.intersection + '<br>' + '</p>' +
+        '<p>suburb:' + '<br>' + data.features[i].properties.suburb + '<br>' + '</p>' +
+        '<p>postcode:' + '<br>' + data.features[i].properties.postcode + '<br>' + '</p>' +
+        '<p>road_classification_type:' + '<br>' + data.features[i].properties.road_classification_type + '<br>' + '</p>' +
+        '<p>lga:' + '<br>' + data.features[i].properties.lga + '<br>' + '</p>' +
+        '</div>' +
+        '<div class="iw-bottom-gradient"></div>' +
+        '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
         var marker = new google.maps.Marker({
             position: {
                 lat: data.features[i].properties.wgs84_latitude,
@@ -118,30 +135,20 @@ function setMarkers(map, data) {
             icon: image,
             shape: shape,
             title: data.features[i].properties.full_name,
-            zIndex: data.features[i].properties.quality_rating
+            // zIndex: data.features[i].properties.quality_rating,
+            info: contentString
         });
 
-        var contentString = '<div id="iw-container">' +
-            '<div class="iw-title">' + data.features[i].properties.full_name + '</div>' +
-            '<div class="iw-content">' +
-            '<div class="iw-subTitle">info</div>' +
-            '<p>intersection:' + '<br>' + data.features[i].properties.intersection + '<br>' + '</p>' +
-            '<p>suburb:' + '<br>' + data.features[i].properties.suburb + '<br>' + '</p>' +
-            '<p>postcode:' + '<br>' + data.features[i].properties.postcode + '<br>' + '</p>' +
-            '<p>road_classification_type:' + '<br>' + data.features[i].properties.road_classification_type + '<br>' + '</p>' +
-            '<p>lga:' + '<br>' + data.features[i].properties.lga + '<br>' + '</p>' +
-            '</div>' +
-            '<div class="iw-bottom-gradient"></div>' +
-            '</div>';
+       
 
+        google.maps.event.addListener( marker, 'click', function() {
 
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
+            infoWindow.setContent( this.info );
+            infoWindow.open( map, this );
+         
+         });
 
-        marker.addListener('click', function() {
-            infowindow.open(map, marker);
-          });
+        
 
     }
 }
