@@ -114,6 +114,32 @@ function rating(data) {
 
 }
 
+function check(data) {
+
+    for (var i = 0; i < data.features.length; i++) {
+
+        if (data.features[i].properties.heavy_vehicle_checking_station == true) {
+            var content = '<i class="fa fa-exclamation-square"></i>';
+        }
+        if (data.features[i].properties.heavy_vehicle_checking_station == false) {
+            var content = '<i class="fa fa-check-square"></i>';
+        }
+        return content;
+    }
+
+}
+
+function createOptions(data){
+    
+    var options = "<option value='0'>Select</option>";
+    for(var i=0; i<data.features.length;i++){
+        options+= '<option value='+ data.features[i].properties.full_name + '>'+data.features[i].properties.common_road_name+'</option>';
+    }
+    document.getElementById('start').innerHTML = options;
+    document.getElementById('end').innerHTML = options;
+
+}
+
 function setMarkers(map, data) {
     // Adds markers to the map.
     var beaches = [
@@ -145,6 +171,7 @@ function setMarkers(map, data) {
         coords: [1, 1, 1, 20, 18, 20, 18, 1],
         type: 'poly'
     };
+    createOptions(data);
 
     for (var i = 0; i < data.features.length; i++) {
         var contentString = '<div id="iw-container">' +
@@ -156,7 +183,11 @@ function setMarkers(map, data) {
             '<p>postcode:' + '<br>' + data.features[i].properties.post_code + '<br>' + '</p>' +
             '<p>road_classification_type:' + '<br>' + data.features[i].properties.road_classification_type + '<br>' + '</p>' +
             '<p>lga:' + '<br>' + data.features[i].properties.lga + '<br>' + '</p>' +
+
             rating(data) +
+            '<p>heavy_vehicle_checking_station:' + '<br>' + check(data)+ '<br>' + '</p>' +
+
+            
 
             '</div>' +
 
@@ -178,8 +209,22 @@ function setMarkers(map, data) {
             // zIndex: data.features[i].properties.quality_rating,
             info: contentString
         });
-       
 
+        // var directionsRenderer = new google.maps.DirectionsRenderer({map: map});
+
+        // // Instantiate an info window to hold step text.
+        // var stepDisplay = new google.maps.InfoWindow;
+
+        // // Display the route between the initial start and end selections.
+        // calculateAndDisplayRoute(
+        //     directionsRenderer, directionsService, markerArray, stepDisplay, map);
+        // // Listen to change events from the start and end lists.
+        // var onChangeHandler = function() {
+        //   calculateAndDisplayRoute(
+        //       directionsRenderer, directionsService, markerArray, stepDisplay, map);
+        // };
+        // document.getElementById('start').addEventListener('change', onChangeHandler);
+        // document.getElementById('end').addEventListener('change', onChangeHandler);
 
 
         google.maps.event.addListener(marker, 'click', function () {
@@ -194,3 +239,53 @@ function setMarkers(map, data) {
     }
 
 }
+
+// function calculateAndDisplayRoute(directionsRenderer, directionsService,
+//     markerArray, stepDisplay, map) {
+//   // First, remove any existing markers from the map.
+//   for (var i = 0; i < markerArray.length; i++) {
+//     markerArray[i].setMap(null);
+//   }
+
+//   // Retrieve the start and end locations and create a DirectionsRequest using
+//   // WALKING directions.
+//   directionsService.route({
+//     origin: document.getElementById('start').value,
+//     destination: document.getElementById('end').value,
+//     travelMode: 'WALKING'
+//   }, function(response, status) {
+//     // Route the directions and pass the response to a function to create
+//     // markers for each step.
+//     if (status === 'OK') {
+//       document.getElementById('warnings-panel').innerHTML =
+//           '<b>' + response.routes[0].warnings + '</b>';
+//       directionsRenderer.setDirections(response);
+//       showSteps(response, markerArray, stepDisplay, map);
+//     } else {
+//       window.alert('Directions request failed due to ' + status);
+//     }
+//   });
+// }
+
+// function showSteps(directionResult, markerArray, stepDisplay, map) {
+//   // For each step, place a marker, and add the text to the marker's infowindow.
+//   // Also attach the marker to an array so we can keep track of it and remove it
+//   // when calculating new routes.
+//   var myRoute = directionResult.routes[0].legs[0];
+//   for (var i = 0; i < myRoute.steps.length; i++) {
+//     var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+//     marker.setMap(map);
+//     marker.setPosition(myRoute.steps[i].start_location);
+//     attachInstructionText(
+//         stepDisplay, marker, myRoute.steps[i].instructions, map);
+//   }
+// }
+
+// function attachInstructionText(stepDisplay, marker, text, map) {
+//   google.maps.event.addListener(marker, 'click', function() {
+//     // Open an info window when the marker is clicked on, containing the text
+//     // of the step.
+//     stepDisplay.setContent(text);
+//     stepDisplay.open(map, marker);
+//   });
+// }

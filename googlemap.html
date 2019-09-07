@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Complex Marker Icons</title>
@@ -11,38 +12,85 @@
     <link rel="stylesheet" type="text/css" href="css/googlemap.css" />
 
     <style>
-      /* Always set the map height explicitly to define the size of the div
+        /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #floating-panel {
+            position: absolute;
+            top: 12.5%;
+            left: 15%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto', 'sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        #warnings-panel {
+            width: 100%;
+            height: 10%;
+            text-align: center;
+        }
     </style>
-  </head>
-  <body>
-        <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">MoveToTheFuture</a>
-                    </div>
-                    <ul class="nav navbar-nav">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="index.html">Here API</a></li>
-                        <li class="active"><a href="googlemap.html">Google Map API</a></li>
-                        <li><a href="#">Page 3</a></li>
-                    </ul>
-                </div>
-            </nav>
-    <div id="map"></div>
-    
-    <script src = "js/googlemap.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">MoveToTheFuture</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="#">Home</a></li>
+                <li><a href="index.html">Here API</a></li>
+                <li class="active"><a href="googlemap.html">Google Map API</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="floating-panel">
+        <b>Start: </b>
+        <select id="start">
+
+        </select>
+        <b>End: </b>
+        <select id="end">
+
+        </select>
+        <b>Mode of Travel: </b>
+
+        <select id="mode">
+            <option value="DRIVING">Driving</option>
+            <option value="WALKING">Walking</option>
+            <option value="BICYCLING">Bicycling</option>
+            <option value="TRANSIT">Transit</option>
+        </select>
+    </div>
+
+    <div id="map">
+
+
+    </div>
+    <div id="warnings-panel"></div>
+
+    <script src="js/googlemap.js"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUWZh6W3ABvJ52_aYXqptDyKtj7y-wefM&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUWZh6W3ABvJ52_aYXqptDyKtj7y-wefM&callback=initMap">
     </script>
-  </body>
+</body>
+
 </html>
