@@ -81,36 +81,36 @@ function rating(data) {
 
     for (var i = 0; i < data.features.length; i++) {
 
-    if (data.features[i].properties.quality_rating == 0) {
-        var stars = null;
+        if (data.features[i].properties.quality_rating == 0) {
+            var stars = null;
+        }
+        if (data.features[i].properties.quality_rating == 1) {
+            var stars = '<span class="fa fa-star checked"></span>';
+        }
+        if (data.features[i].properties.quality_rating == 2) {
+            var stars = '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>';
+        }
+        if (data.features[i].properties.quality_rating == 3) {
+            var stars = '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>';
+        }
+        if (data.features[i].properties.quality_rating == 4) {
+            var stars = '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>';
+        }
+        if (data.features[i].properties.quality_rating == 5) {
+            var stars = '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>' +
+                '<span class="fa fa-star checked"></span>';
+        }
+        return stars;
     }
-    if (data.features[i].properties.quality_rating == 1) {
-        var stars = '<span class="fa fa-star checked"></span>';
-    }
-    if (data.features[i].properties.quality_rating == 2) {
-        var stars = '<span class="fa fa-star checked"></span>' +
-            '<span class="fa fa-star checked"></span>';
-    }
-    if (data.features[i].properties.quality_rating == 3) {
-        var stars = '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>';
-    }
-    if (data.features[i].properties.quality_rating == 4) {
-        var stars = '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>';
-    }
-    if (data.features[i].properties.quality_rating == 5) {
-        var stars = '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>'+
-        '<span class="fa fa-star checked"></span>';
-    }
-    return stars;
-}
 
 }
 
@@ -153,29 +153,32 @@ function setMarkers(map, data) {
             '<div class="iw-subTitle">info</div>' +
             '<p>intersection:' + '<br>' + data.features[i].properties.intersection + '<br>' + '</p>' +
             '<p>suburb:' + '<br>' + data.features[i].properties.suburb + '<br>' + '</p>' +
-            '<p>postcode:' + '<br>' + data.features[i].properties.postcode + '<br>' + '</p>' +
+            '<p>postcode:' + '<br>' + data.features[i].properties.post_code + '<br>' + '</p>' +
             '<p>road_classification_type:' + '<br>' + data.features[i].properties.road_classification_type + '<br>' + '</p>' +
             '<p>lga:' + '<br>' + data.features[i].properties.lga + '<br>' + '</p>' +
-            '</div>' +
             rating(data) +
+
+            '</div>' +
+
             '<div class="iw-bottom-gradient"></div>' +
             '</div>';
 
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
+
         var marker = new google.maps.Marker({
             position: {
                 lat: data.features[i].properties.wgs84_latitude,
                 lng: data.features[i].properties.wgs84_longitude
             },
             map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
             icon: image,
             shape: shape,
             title: data.features[i].properties.full_name,
             // zIndex: data.features[i].properties.quality_rating,
             info: contentString
         });
+       
 
 
 
@@ -189,4 +192,5 @@ function setMarkers(map, data) {
 
 
     }
+
 }
