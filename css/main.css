@@ -9,6 +9,8 @@
     position: absolute;
     width: 49%;
     left: 51%;
-    height: 100%;
+    
     background: inherit;
+    height: 200px;
+    overflow: scroll;
   }
