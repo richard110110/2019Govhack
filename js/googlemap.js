@@ -287,6 +287,21 @@ function initMap2() {
     document.getElementById('mode').addEventListener('change', function() {
       calculateAndDisplayRoute2(directionsService, directionsRenderer);
     });
+    fetch(url).then(function (res) {
+        return res.json();
+    })
+    .then(function (data) {
+
+        console.log(data);
+        console.log(data.features.length);
+        console.log(data.features[0].properties);
+        console.log(data.features[0].properties.wgs84_latitude);
+        console.log(data.features[0].properties.wgs84_longitude);
+
+
+        setMarkers(map, data);
+
+    });
   }
 
   function calculateAndDisplayRoute2(directionsService, directionsRenderer) {
