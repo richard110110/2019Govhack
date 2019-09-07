@@ -6,7 +6,4 @@ fetch(url).then(function (res) {
 })
 .then(function (data) {
   console.log(data);
-  updatePortfolio(data);
-  updateModal(data);
-
 });
