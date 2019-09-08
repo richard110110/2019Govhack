@@ -143,7 +143,7 @@ function createOptions(data){
     
     var options = "<option value='0'>Select</option>";
     for(var i=0; i<data.features.length;i++){
-        options+= '<option value='+ data.features[i].properties.wgs84_latitude +',' +  data.features[i].properties.wgs84_longitude + '>'+data.features[i].properties.common_road_name+'</option>';
+        options+= '<option value='+ data.features[i].properties.wgs84_latitude +',' +  data.features[i].properties.wgs84_longitude + '>'+data.features[i].properties.full_name+'</option>';
     }
     document.getElementById('start').innerHTML = options;
     document.getElementById('end').innerHTML = options;
@@ -277,11 +277,28 @@ function GetEndSelectedValue(){
 function initMap2() {
     var directionsRenderer = new google.maps.DirectionsRenderer;
     var directionsService = new google.maps.DirectionsService;
+    var start = GetStartSelectedValue();
+
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 14,
-      center: {lat: 37.77, lng: -122.447}
+      center: {lat: parseFloat(start[0]), lng: parseFloat(start[1])}
     });
     directionsRenderer.setMap(map);
+    
+    var selectedMode = document.getElementById('mode').value;
+    console.log(selectedMode);
+    if(selectedMode === "DRIVING"){
+        var trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+    }
+    if(selectedMode === "TRANSIT"){
+        var transitLayer = new google.maps.TransitLayer();
+        transitLayer.setMap(map);
+    }
+    if(selectedMode === "BICYCLING"){
+        var bikeLayer = new google.maps.BicyclingLayer();
+        bikeLayer.setMap(map);
+    }
 
     calculateAndDisplayRoute2(directionsService, directionsRenderer);
     document.getElementById('mode').addEventListener('change', function() {
@@ -345,20 +362,7 @@ function initMap2() {
 // order in which these markers should display on top of each other.
 
 
-function getValue(){
-    GetStartSelectedValue();
-    GetEndSelectedValue();
-    initMap2();
-    
-}
 
-function test(t) {      //defining a function
-    if (t === undefined) {       //if t=undefined, call tt
-          console.log(t.tt)
-                //call tt member from t
-    }
-    return t;    
-  }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     var selectedMode = document.getElementById('mode').value;
@@ -404,54 +408,18 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
 
    
   }
+  function getValue(){
+    GetStartSelectedValue();
+    GetEndSelectedValue();
+    initMap2();
+    
+}
 
+function test(t) {      //defining a function
+    if (t === undefined) {       //if t=undefined, call tt
+          console.log(t.tt)
+                //call tt member from t
+    }
+    return t;    
+  }
 
-// function calculateAndDisplayRoute(directionsRenderer, directionsService,
-//     markerArray, stepDisplay, map) {
-//   // First, remove any existing markers from the map.
-//   for (var i = 0; i < markerArray.length; i++) {
-//     markerArray[i].setMap(null);
-//   }
-
-//   // Retrieve the start and end locations and create a DirectionsRequest using
-//   // WALKING directions.
-//   directionsService.route({
-//     origin: document.getElementById('start').value,
-//     destination: document.getElementById('end').value,
-//     travelMode: 'WALKING'
-//   }, function(response, status) {
-//     // Route the directions and pass the response to a function to create
-//     // markers for each step.
-//     if (status === 'OK') {
-//       document.getElementById('warnings-panel').innerHTML =
-//           '<b>' + response.routes[0].warnings + '</b>';
-//       directionsRenderer.setDirections(response);
-//       showSteps(response, markerArray, stepDisplay, map);
-//     } else {
-//       window.alert('Directions request failed due to ' + status);
-//     }
-//   });
-// }
-
-// function showSteps(directionResult, markerArray, stepDisplay, map) {
-//   // For each step, place a marker, and add the text to the marker's infowindow.
-//   // Also attach the marker to an array so we can keep track of it and remove it
-//   // when calculating new routes.
-//   var myRoute = directionResult.routes[0].legs[0];
-//   for (var i = 0; i < myRoute.steps.length; i++) {
-//     var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
-//     marker.setMap(map);
-//     marker.setPosition(myRoute.steps[i].start_location);
-//     attachInstructionText(
-//         stepDisplay, marker, myRoute.steps[i].instructions, map);
-//   }
-// }
-
-// function attachInstructionText(stepDisplay, marker, text, map) {
-//   google.maps.event.addListener(marker, 'click', function() {
-//     // Open an info window when the marker is clicked on, containing the text
-//     // of the step.
-//     stepDisplay.setContent(text);
-//     stepDisplay.open(map, marker);
-//   });
-// }
