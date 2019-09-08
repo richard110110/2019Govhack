@@ -1,0 +1,7 @@
+service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date
+WHT 18_19-WHT_FUL-Weekday-01,1,1,1,1,1,0,0,20190610,20190628
+WHT 18_19-WHT_FUL-Saturday-01,0,0,0,0,0,1,0,20190615,20190629
+WHT 18_19-WHT_FUL-Sunday-01,0,0,0,0,0,0,1,20190616,20190630
+WHT 19_20-WHT_FUL-Weekday-01,1,1,1,1,1,0,0,20190701,20191231
+WHT 19_20-WHT_FUL-Saturday-01,0,0,0,0,0,1,0,20190706,20191228
+WHT 19_20-WHT_FUL-Sunday-01,0,0,0,0,0,0,1,20190707,20191229
